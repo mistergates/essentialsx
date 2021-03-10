@@ -35,6 +35,3 @@ if __name__ == '__main__':
     # Disable hotkey monitoring
     essentials.disable_hotkeys()
 ```
-
-## TODO
-* Disable hotkeys currently not working
