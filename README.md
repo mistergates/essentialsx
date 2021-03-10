@@ -2,8 +2,8 @@
 
 This project has reusable essentials for python projects, such as:
 
-* Logger (enhanced with rich logging)
-* Hotkey monitoring (e.g. enable debug logging on the fly)
+* Logger (enhanced with [rich](https://pypi.org/project/rich/) logging)
+* Non-blocking hotkey monitoring via [pynput](https://pypi.org/project/pynput/) (e.g. enable debug logging on the fly)
 
 ## Example Usage
 
