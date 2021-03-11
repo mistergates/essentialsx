@@ -54,6 +54,13 @@ class Essentials:
         return self.logger
 
     def register_hotkeys(self, hotkeys: dict):
+        """Registers hotkeys to be used with the hotkey listener.
+
+        This can only be done before the hotkey listener is enabled.
+
+        Args:
+            hotkeys (dict): Hotkeys in a {'hotkey': function} format.
+        """
         if self.hotkey_thread:
             self.logger.error('Cannot register hotkeys after hotkeys have been enabled.')
             return
