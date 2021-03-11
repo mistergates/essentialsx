@@ -12,7 +12,7 @@ def reqs():
 
 
 setup(
-    name="essentials",
+    name="essentialsx",
     version="0.0.1",
     description="Reusable essentials to be used across Python projects.",
     long_description=readme(),
@@ -26,12 +26,12 @@ setup(
         "Programming Language :: Python :: 3.9",
         "Operating System :: OS Independent",
     ],
-    url="https://github.com/mistergates/essentials",
+    url="https://github.com/mistergates/essentialsx",
     author="Mitch Gates",
     author_email="gates55434@gmail.com",
-    keywords="core utilities",
+    keywords="core utilities, logging, hotkeys",
     license="MIT",
-    packages=["essentials"],
+    packages=["essentialsx"],
     install_requires=reqs(),
     include_package_data=True
 )

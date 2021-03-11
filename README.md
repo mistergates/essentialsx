@@ -8,7 +8,7 @@ This project has reusable essentials for python projects, such as:
 ## Example Usage
 
 ```python
-from essentials import Essentials
+from essentialsx import Essentials
 
 
 def foo():
