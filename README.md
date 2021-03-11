@@ -11,8 +11,9 @@ This project has reusable essentials for python projects, such as:
 from essentials import Essentials
 
 
-def custom_function():
-    print('I am using my custom function!')
+def foo():
+    print('bar')
+
 
 if __name__ == '__main__':
     essentials = Essentials()
@@ -24,7 +25,7 @@ if __name__ == '__main__':
     log = essentials.get_logger(logfile='/tmp/mylogfile.log')
 
     # Register custom hotkeys
-    essentials.register_hotkeys({'<ctrl>+<alt>+c': custom_function})
+    essentials.register_hotkeys({'<ctrl>+<alt>+c': foo})
 
     # Get all registered hotkeys
     print(essentials.get_hotkeys())

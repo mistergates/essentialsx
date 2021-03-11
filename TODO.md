@@ -2,8 +2,8 @@
 
 ### Todo
 - [ ] Add test cases
-- [ ] Create setup
 - [ ] Add versioning
 
 ### Done ✓
 - [x] Disable hotkeys currently not working
+- [x] Create setup
