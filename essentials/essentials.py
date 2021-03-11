@@ -1,5 +1,5 @@
 import logging
-import threading
+import json
 
 from pynput import keyboard
 from rich.logging import RichHandler
@@ -8,15 +8,16 @@ from rich.logging import RichHandler
 class Essentials:
 
     def __init__(self):
-        self.hotkey_thread = None
-        self.hotkey_thread_stop_event = None
-        self.logfile = None
-        self.logfile_handler = None
+        self._hotkey_thread = None
+        self._logfile = None
+        self._logfile_handler = None
+        self._previous_log_level = None
 
         self.get_logger()
 
-        self.hotkeys = {
-            '<ctrl>+<alt>+d': self._toggle_debug_logging
+        self._hotkeys = {
+            '<ctrl>+<alt>+d': self._toggle_debug_logging,
+            '<ctrl>+<alt>+l': self._display_hotkeys
         }
 
     def get_logger(self, name: str=None, logfile: str=None):
@@ -40,16 +41,16 @@ class Essentials:
             self.logger = logging.getLogger(name=name)
 
         if logfile:
-            if self.logfile and logfile != self.logfile:
-                self.logger.removeHandler(self.logfile_handler)
-                self.logfile_handler = None
-                self.logfile = None
+            if self._logfile and logfile != self._logfile:
+                self.logger.removeHandler(self._logfile_handler)
+                self._logfile_handler = None
+                self._logfile = None
 
-            if not self.logfile:
+            if not self._logfile:
                 fh = logging.FileHandler(logfile, mode="w", encoding=None, delay=False)
                 self.logger.addHandler(fh)
-                self.logfile_handler = fh
-                self.logfile = logfile
+                self._logfile_handler = fh
+                self._logfile = logfile
 
         return self.logger
 
@@ -61,36 +62,35 @@ class Essentials:
         Args:
             hotkeys (dict): Hotkeys in a {'hotkey': function} format.
         """
-        if self.hotkey_thread:
+        if self._hotkey_thread:
             self.logger.error('Cannot register hotkeys after hotkeys have been enabled.')
             return
 
         for key in hotkeys:
-            if key in self.hotkeys:
+            if key in self._hotkeys:
                 self.logger.warning('Replacing default hotkey %s', key)
-            self.hotkeys[key] = hotkeys[key]
+            self._hotkeys[key] = hotkeys[key]
             self.logger.info('Registered hotkey "%s" with function "%s"', key, hotkeys[key].__name__)
 
     def enable_hotkeys(self):
         """Enables the hotkey listener
         """
-        if self.hotkey_thread:
+        if self._hotkey_thread:
             return
 
         self.logger.info('Enabling hotkey listener')
-        
-        self.hotkey_thread_stop_event = threading.Event()
-        self.hotkey_thread = threading.Thread(target=self._hotkey_listener, args=(self.hotkeys,), daemon=True)
-        self.hotkey_thread.start()
+        self._hotkey_thread = keyboard.GlobalHotKeys(self._hotkeys)
+        self._hotkey_thread.start()
 
     def disable_hotkeys(self):
         """Disables the hotkey listener
         """
-        if not self.hotkey_thread:
+        if not self._hotkey_thread:
             return
 
         self.logger.info('Disabling hotkey listener')
-        self.hotkey_thread_stop_event.set()
+        self._hotkey_thread.stop()
+        self._hotkey_thread = None
 
     def get_hotkeys(self):
         """Get a dictionary of all registered hotkeys
@@ -104,18 +104,18 @@ class Essentials:
                 }
         """
         hotkeys = {}
-        for key, value in self.hotkeys.items():
+        for key, value in self._hotkeys.items():
             hotkeys[key] = value.__name__
 
         return hotkeys
 
-    def _hotkey_listener(self, hotkeys):
-        with keyboard.GlobalHotKeys(hotkeys) as h:
-            h.join()
-
     def _toggle_debug_logging(self):
         self.logger.info('Toggling debug logging')
-        if self.logger.level == logging.INFO:
+        if self.logger.level != logging.DEBUG:
+            self._previous_log_level = self.logger.level
             self.logger.setLevel('DEBUG')
         else:
-            self.logger.setLevel('INFO')
+            self.logger.setLevel(self._previous_log_level)
+
+    def _display_hotkeys(self):
+        self.logger.info(json.dumps(self.get_hotkeys(), indent=2))
