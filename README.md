@@ -1,5 +1,6 @@
 # Python Essentials
 ![PyPI](https://img.shields.io/pypi/v/essentialsx)
+![PyPI - Python Version](https://img.shields.io/pypi/pyversions/essentialsx)
 
 * Easily create a logger enhanced with [rich logging handler](https://rich.readthedocs.io/en/stable/logging.html)
 * Traceback formatting that you can easily following via [rich Traceback](https://rich.readthedocs.io/en/stable/traceback.html)
