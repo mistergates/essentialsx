@@ -75,6 +75,3 @@ essentials.enable_hotkeys()
 # Disable all enabled hotkeys
 essentials.disable_hotkeys()
 ```
-
-##
-https://pypi.org/project/rich/
