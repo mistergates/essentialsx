@@ -13,8 +13,8 @@ def reqs():
 
 setup(
     name="essentialsx",
-    version="0.0.1",
-    description="Reusable essentials to be used across Python projects.",
+    version="0.0.2",
+    description="Essential functions to be easily reused across Python projects.",
     long_description=readme(),
     long_description_content_type="text/markdown",
     classifiers=[
